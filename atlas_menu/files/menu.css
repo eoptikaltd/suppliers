@@ -1,0 +1,97 @@
+/* ============================================================================
+   Atlas menu — one shared menu for every eOptika tool.   menu.css · v1 · 2026-11-10
+   Drawn by menu.js. Uses the Atlas design tokens when the page has them
+   (admin-tokens.css); every value also has the same Atlas value as a fallback,
+   so a tool without the tokens (Dash, plain pages) looks the same.
+   All classes start with "atm-" so they never clash with a tool's own styles.
+   ============================================================================ */
+
+.atm-mark,.atm-panel,.atm-backdrop{
+  --atm-surface:var(--surface,#FFFFFF);
+  --atm-surface-2:var(--surface-2,#F0F2FA);
+  --atm-border:var(--border,#E8EAF3);
+  --atm-border-strong:var(--border-strong,#D8DCEB);
+  --atm-text:var(--text,#22263A);
+  --atm-muted:var(--text-muted,#5B6070);
+  --atm-active:var(--primary-soft,#E7E9F8);
+  --atm-focus:var(--primary,#2E37A4);
+  --atm-live:var(--success,#0E7A4B);
+  --atm-build:var(--warning,#9A6700);
+  --atm-shadow:var(--shadow-pop,0 8px 30px rgba(20,20,20,.14));
+  --atm-ease:var(--ease,cubic-bezier(.2,.7,.3,1));
+  --atm-font:var(--font-ui,'DM Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif);
+  box-sizing:border-box;font-family:var(--atm-font);
+}
+.atm-panel *,.atm-panel *::before,.atm-panel *::after{box-sizing:border-box}
+
+/* ---- the Atlas button (opens and closes the menu) ------------------------- */
+.atm-mark{flex:0 0 auto;width:44px;height:44px;padding:2px;margin:0;border:0;border-radius:12px;
+  background:transparent;display:inline-grid;place-items:center;cursor:pointer;
+  transition:background .12s var(--atm-ease);-webkit-tap-highlight-color:transparent}
+@media(hover:hover){.atm-mark:hover{background:var(--atm-surface-2)}}
+.atm-mark:focus-visible{outline:2px solid var(--atm-focus);outline-offset:2px}
+.atm-mark svg{width:40px;height:40px;display:block}
+/* no place given by the tool: it floats at the top-left of the page */
+.atm-mark--float{position:fixed;top:10px;left:10px;z-index:2147483000;
+  background:var(--atm-surface);box-shadow:0 1px 3px rgba(20,20,20,.16)}
+/* put at the start of the tool's top bar: keep a little space after it */
+.atm-mark--mounted{margin-right:8px}
+/* size=s: for a slim top bar that would otherwise wrap (still a 34 px tap target) */
+.atm-mark--s{width:34px;height:34px;padding:1px;border-radius:8px}
+.atm-mark--s svg{width:30px;height:30px}
+.atm-mark--s.atm-mark--mounted{margin-right:6px}
+
+/* ---- the menu, over the page ---------------------------------------------- */
+.atm-backdrop{position:fixed;inset:0;z-index:2147483001;margin:0;padding:0;border:0;
+  background:rgba(34,38,58,.45);opacity:0;pointer-events:none;transition:opacity .2s var(--atm-ease)}
+.atm-panel{position:fixed;top:0;left:0;bottom:0;z-index:2147483002;
+  width:min(300px,86vw);height:100vh;height:100dvh;margin:0;
+  display:flex;flex-direction:column;background:var(--atm-surface);color:var(--atm-text);
+  border-right:1px solid var(--atm-border);box-shadow:var(--atm-shadow);
+  font-size:14px;line-height:1.45;text-align:left;
+  transform:translateX(-102%);visibility:hidden;
+  transition:transform .2s var(--atm-ease),visibility 0s linear .2s}
+html.atm-open .atm-panel{transform:none;visibility:visible;transition:transform .2s var(--atm-ease),visibility 0s}
+html.atm-open .atm-backdrop{opacity:1;pointer-events:auto}
+html.atm-open,html.atm-open body{overflow:hidden}
+
+.atm-head{display:flex;align-items:center;gap:12px;padding:14px 12px 10px;
+  border-bottom:1px solid var(--atm-border);flex:0 0 auto}
+.atm-head .atm-mark{background:transparent;box-shadow:none}
+.atm-brand{font-weight:700;font-size:16px;color:var(--atm-text);text-decoration:none;padding:6px 0}
+.atm-brand:hover{text-decoration:underline}
+
+.atm-groups{flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;padding:8px 10px 24px;
+  scrollbar-width:thin;scrollbar-color:var(--atm-border-strong) transparent}
+.atm-group+.atm-group{margin-top:2px}
+.atm-section{width:100%;display:flex;align-items:center;gap:8px;margin:0;padding:10px 8px;
+  border:0;border-radius:8px;background:transparent;cursor:pointer;text-align:left;
+  font:inherit;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  line-height:1.35;color:var(--atm-muted)}
+.atm-section:hover{background:var(--atm-surface-2);color:var(--atm-text)}
+.atm-section:focus-visible,.atm-item:focus-visible,.atm-brand:focus-visible{
+  outline:2px solid var(--atm-focus);outline-offset:-2px}
+.atm-section span{flex:1}
+.atm-chev{width:14px;height:14px;flex:0 0 14px;opacity:.55;transition:transform .18s var(--atm-ease)}
+.atm-group[data-open="true"] .atm-chev{transform:rotate(180deg)}
+.atm-items{display:none;flex-direction:column;gap:2px;padding:2px 0 8px}
+.atm-group[data-open="true"] .atm-items{display:flex}
+
+.atm-item{display:flex;align-items:center;gap:12px;min-height:40px;padding:8px 10px;
+  border-radius:12px;color:var(--atm-muted);font-weight:500;text-decoration:none;
+  transition:background .15s var(--atm-ease)}
+.atm-item:hover{background:var(--atm-surface-2);color:var(--atm-text);text-decoration:none}
+.atm-item--active{background:var(--atm-active);color:var(--atm-text);font-weight:600}
+.atm-item svg{width:20px;height:20px;flex:0 0 20px}
+.atm-label{flex:1;min-width:0}
+.atm-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--atm-border-strong)}
+.atm-dot--live{background:var(--atm-live)}
+.atm-dot--build{background:var(--atm-build)}
+.atm-empty{color:var(--atm-muted);padding:12px 8px}
+
+/* ---- the kit's page frame: no menu column any more ------------------------ */
+.app.app--atlas-menu{grid-template-columns:1fr}
+
+@media(prefers-reduced-motion:reduce){
+  .atm-panel,.atm-backdrop,.atm-chev,.atm-mark{transition:none}
+}

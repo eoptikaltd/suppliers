@@ -1,0 +1,503 @@
+{
+  "home": {
+    "id": "atlas",
+    "label": "Home",
+    "url": "https://atlas.eoptika.com",
+    "icon": "atlas",
+    "status": "live"
+  },
+  "statuses": {
+    "live": "Live",
+    "build": "In build",
+    "plan": "Planned",
+    "parked": "Parked"
+  },
+  "groups": [
+    {
+      "name": "Data & Platform",
+      "items": [
+        {
+          "id": "gateway",
+          "label": "Gateway",
+          "icon": "gateway",
+          "status": "live",
+          "about": "Front door · sign-in · access"
+        },
+        {
+          "id": "datawarehouse",
+          "label": "Datawarehouse",
+          "icon": "datawarehouse",
+          "status": "live",
+          "url": "https://datawarehouse.eoptika.com",
+          "about": "BigQuery loaders & freshness"
+        },
+        {
+          "id": "check",
+          "label": "Check",
+          "icon": "check",
+          "status": "live",
+          "about": "Data quality checks · ClearVisio ↔ ERP ↔ NAV · orders · revenue"
+        },
+        {
+          "id": "email-classifier",
+          "label": "Email classifier",
+          "icon": "email-classifier",
+          "status": "live",
+          "about": "Mailbox ingestion · labels for CS, Abacus, RX"
+        },
+        {
+          "id": "beacon",
+          "label": "Beacon",
+          "icon": "beacon",
+          "status": "build",
+          "about": "Outbound e-mail service"
+        },
+        {
+          "id": "ai-costs",
+          "label": "AI costs",
+          "icon": "ai-costs",
+          "status": "build",
+          "about": "AI token & subscription cost ledger"
+        },
+        {
+          "id": "daily-ops-review",
+          "label": "Daily ops review",
+          "icon": "daily-ops-review",
+          "status": "live",
+          "about": "One daily health check over all tools"
+        },
+        {
+          "id": "priorities-board",
+          "label": "Priorities board",
+          "icon": "priorities-board",
+          "status": "build",
+          "about": "Daily project Kanban"
+        },
+        {
+          "id": "guru-pulse",
+          "label": "Guru Pulse",
+          "icon": "devops",
+          "status": "parked",
+          "url": "https://guru.eoptika.com",
+          "about": "Build system · project pipeline"
+        }
+      ]
+    },
+    {
+      "name": "Performance",
+      "items": [
+        {
+          "id": "moneyprint",
+          "label": "Moneyprint",
+          "icon": "moneyprint",
+          "status": "live",
+          "url": "https://bi.eoptika.com/money/product-portfolio",
+          "about": "ABC costing · KPI · EBITDA"
+        },
+        {
+          "id": "bi",
+          "label": "BI",
+          "icon": "bi",
+          "status": "live",
+          "url": "https://bi.eoptika.com",
+          "about": "Business intelligence · analytical charts"
+        },
+        {
+          "id": "dashboards",
+          "label": "Dashboards",
+          "icon": "dashboards",
+          "status": "build",
+          "about": "Company performance · revenue, gross margin, EBITDA vs last year"
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "items": [
+        {
+          "id": "iris",
+          "label": "IRIS",
+          "icon": "iris",
+          "status": "live",
+          "about": "CRM · customer database · messaging"
+        },
+        {
+          "id": "customer-segments",
+          "label": "Customer segments",
+          "icon": "customer-segments",
+          "status": "build",
+          "about": "Recency-frequency model · segments"
+        },
+        {
+          "id": "cl-subscriptions",
+          "label": "CL subscriptions",
+          "icon": "cl-subscriptions",
+          "status": "plan",
+          "about": "Contact lens & solution subscriptions"
+        }
+      ]
+    },
+    {
+      "name": "Customer service & Knowledge Base",
+      "items": [
+        {
+          "id": "cs",
+          "label": "CS",
+          "icon": "cs",
+          "status": "plan",
+          "about": "Customer service"
+        },
+        {
+          "id": "auto-cs",
+          "label": "Auto-CS",
+          "icon": "auto-cs",
+          "status": "plan",
+          "about": "CS on autopilot · re-invoicing, returns, payment checks"
+        },
+        {
+          "id": "autometrist",
+          "label": "Autometrist",
+          "icon": "autometrist",
+          "status": "plan",
+          "about": "Medical & eye-test questions"
+        },
+        {
+          "id": "knowledge-base",
+          "label": "Knowledge base",
+          "icon": "knowledge-base",
+          "status": "build",
+          "about": "Company-wide KB behind CS, Autometrist and search"
+        }
+      ]
+    },
+    {
+      "name": "Store",
+      "items": [
+        {
+          "id": "store-dashboards",
+          "label": "Store dashboards",
+          "icon": "store",
+          "status": "live",
+          "url": "https://store-monthly-revenues-thrl3bt5ya-ew.a.run.app",
+          "about": "Teréz krt 50 performance · bonuses (mozgóbér) · 24/7 staff screens"
+        },
+        {
+          "id": "clearvisio-erp-sync-fixes",
+          "label": "ClearVisio–ERP sync fixes",
+          "icon": "sync-fixes",
+          "status": "live",
+          "url": "https://clearvisio-erp-sync-fixes-thrl3bt5ya-ew.a.run.app",
+          "about": "Store stock gaps · unsynced store orders"
+        },
+        {
+          "id": "idopont",
+          "label": "IDOPONT",
+          "icon": "fovea",
+          "status": "build",
+          "about": "Eye-exam booking"
+        },
+        {
+          "id": "lab",
+          "label": "Lab / Műhely",
+          "icon": "lab",
+          "status": "plan",
+          "about": "Glazing lab"
+        },
+        {
+          "id": "szempont",
+          "label": "Szempont",
+          "icon": "szempont",
+          "status": "parked",
+          "about": "Store ERP"
+        }
+      ]
+    },
+    {
+      "name": "Webshops & Catalogue",
+      "items": [
+        {
+          "id": "webstore-management",
+          "label": "Webstore management",
+          "icon": "webstore-management",
+          "status": "build",
+          "about": "Site management · Unas redirects"
+        },
+        {
+          "id": "product-catalogue-management",
+          "label": "Product catalogue management",
+          "icon": "product-catalogue-management",
+          "status": "plan",
+          "about": "Frames · sunglasses · lenses · drops · PRC → Unas feed"
+        },
+        {
+          "id": "enrichment",
+          "label": "Enrichment",
+          "icon": "enrichment",
+          "status": "plan",
+          "about": "Catalogue · compatibility groups"
+        },
+        {
+          "id": "unas-product-status",
+          "label": "Unas product status",
+          "icon": "unas-product-status",
+          "status": "live",
+          "about": "Nightly status sync · Sunoptic & private-label frames"
+        },
+        {
+          "id": "smart-onsite-search",
+          "label": "Smart onsite search",
+          "icon": "onsite-search",
+          "status": "build",
+          "about": "A1 · one search engine for all webshops"
+        },
+        {
+          "id": "lens-selector",
+          "label": "Lens selector",
+          "icon": "lens-selector",
+          "status": "live",
+          "about": "Webshop lens configurator · lens sync"
+        },
+        {
+          "id": "lenscodec",
+          "label": "LensCodec",
+          "icon": "lenscodec",
+          "status": "live",
+          "about": "SF6 lens catalogue converter"
+        }
+      ]
+    },
+    {
+      "name": "Marketing & SEO",
+      "items": [
+        {
+          "id": "poas-engine",
+          "label": "POAS Engine",
+          "icon": "poas",
+          "status": "plan",
+          "about": "Profit-based ad targets from Moneyprint"
+        },
+        {
+          "id": "pseo",
+          "label": "pSEO",
+          "icon": "pseo",
+          "status": "live",
+          "url": "https://bi.eoptika.com/seo/GEO-dashboard",
+          "about": "Programmatic SEO · GEO audit · Compass"
+        },
+        {
+          "id": "programmatic-ads",
+          "label": "Programmatic ads",
+          "icon": "programmatic-ads",
+          "status": "plan",
+          "about": "Automated advertising · Romania pilot"
+        },
+        {
+          "id": "keywords",
+          "label": "Keywords",
+          "icon": "keywords",
+          "status": "live",
+          "url": "https://pseo-keywords-editor-thrl3bt5ya-ew.a.run.app",
+          "about": "Keyword sets · rank tracker · Basket editor"
+        },
+        {
+          "id": "brand-conversations",
+          "label": "Brand conversations",
+          "icon": "brand-conversations",
+          "status": "plan",
+          "about": "Earned mentions · zero-click visibility"
+        },
+        {
+          "id": "cro",
+          "label": "CRO",
+          "icon": "cro",
+          "status": "build",
+          "about": "GrowthBook · Clarity · CRO manager"
+        },
+        {
+          "id": "marketplaces",
+          "label": "Marketplaces",
+          "icon": "marketplaces",
+          "status": "plan",
+          "about": "Amazon · eMAG"
+        }
+      ]
+    },
+    {
+      "name": "Market intelligence",
+      "items": [
+        {
+          "id": "competitor-price-monitor",
+          "label": "Competitor price monitor",
+          "icon": "competitor-price-monitor",
+          "status": "live",
+          "url": "https://competitor-price-monitor-thrl3bt5ya-ew.a.run.app",
+          "about": "Competitor prices · pricing suggestions"
+        },
+        {
+          "id": "competitor-promotions",
+          "label": "Competitor promotions",
+          "icon": "competitor-promotions",
+          "status": "live",
+          "about": "Competitor promotions · ad libraries"
+        },
+        {
+          "id": "competitors",
+          "label": "Competitors",
+          "icon": "radar",
+          "status": "live",
+          "about": "International competitor register · categoriser"
+        },
+        {
+          "id": "geo-map",
+          "label": "Geo map",
+          "icon": "geo-map",
+          "status": "live",
+          "url": "https://bi.eoptika.com/management/geo-map",
+          "about": "Competitive map · catchments · geo targeting"
+        }
+      ]
+    },
+    {
+      "name": "Sourcing",
+      "items": [
+        {
+          "id": "suppliers",
+          "label": "Suppliers",
+          "icon": "suppliers",
+          "status": "live",
+          "url": "https://suppliers.eoptika.com",
+          "about": "Sourcing monitors · Blue-Berry · MrSonder"
+        },
+        {
+          "id": "dual-sourcing",
+          "label": "Dual sourcing",
+          "icon": "dual-sourcing",
+          "status": "build",
+          "about": "Dual-sourcing monitor · supplier offer intake"
+        },
+        {
+          "id": "eyewear-catalogue",
+          "label": "Eyewear catalogue",
+          "icon": "eyewear-catalogue",
+          "status": "plan",
+          "about": "Supplier frame catalogues · ordering · Collection maker"
+        },
+        {
+          "id": "supplier-loyalty",
+          "label": "Supplier loyalty",
+          "icon": "supplier-loyalty",
+          "status": "build",
+          "about": "Alcon Loyalty Ledger · Johnson ACUVUE 3+1"
+        },
+        {
+          "id": "supplier-promotions",
+          "label": "Supplier promotions",
+          "icon": "supplier-promotions",
+          "status": "build",
+          "about": "Alcon quarterly promotions · bulk & top-up buys"
+        }
+      ]
+    },
+    {
+      "name": "Fulfilment",
+      "items": [
+        {
+          "id": "wimo",
+          "label": "WIMO",
+          "icon": "wimo",
+          "status": "parked",
+          "about": "Order tracking"
+        },
+        {
+          "id": "parcels",
+          "label": "Parcel Tracking",
+          "icon": "parceltracking",
+          "status": "live",
+          "url": "https://parcels.eoptika.hu",
+          "about": "Parcel control room"
+        },
+        {
+          "id": "sendparcels",
+          "label": "SendParcel",
+          "icon": "warehouse",
+          "status": "build",
+          "url": "https://sendparcels.eoptika.com",
+          "about": "FAN labels · pickup slips · address checks"
+        },
+        {
+          "id": "warehouse",
+          "label": "Warehouse",
+          "icon": "warehouse",
+          "status": "plan",
+          "about": "Teréz krt 41 stock"
+        },
+        {
+          "id": "boomerang",
+          "label": "Boomerang",
+          "icon": "boomerang",
+          "status": "plan",
+          "about": "Returns & warranty"
+        }
+      ]
+    },
+    {
+      "name": "Finance & Accounting",
+      "items": [
+        {
+          "id": "finance",
+          "label": "Finance",
+          "icon": "finance",
+          "status": "plan",
+          "about": "Finance & accounting"
+        },
+        {
+          "id": "abacus",
+          "label": "Abacus",
+          "icon": "abacus",
+          "status": "live",
+          "about": "Supplier invoices · NAV checks"
+        },
+        {
+          "id": "balances",
+          "label": "Balances",
+          "icon": "balances",
+          "status": "plan",
+          "about": "Partner balances · balance confirmations"
+        },
+        {
+          "id": "epr",
+          "label": "EPR",
+          "icon": "epr",
+          "status": "build",
+          "about": "Packaging-waste declarations · 27 EU markets"
+        },
+        {
+          "id": "fx-treasury",
+          "label": "FX & treasury",
+          "icon": "fx",
+          "status": "plan",
+          "about": "FX exposure · hedging"
+        }
+      ]
+    },
+    {
+      "name": "HR",
+      "items": [
+        {
+          "id": "hr",
+          "label": "HR Register",
+          "icon": "hr",
+          "status": "plan",
+          "about": "Staff master data · cost centres"
+        },
+        {
+          "id": "jelen",
+          "label": "Jelen",
+          "icon": "jelen",
+          "status": "plan",
+          "about": "Attendance · timesheets"
+        }
+      ]
+    }
+  ]
+}

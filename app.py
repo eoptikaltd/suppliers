@@ -7,14 +7,17 @@ Run:  pip install -r requirements.txt  &&  python app.py   ->  http://localhost:
 """
 import os, json, glob
 from flask import Flask, render_template, request, redirect, make_response, url_for, abort
+import atlas_menu
 
 app = Flask(__name__)
 APP_NAME = "Atlas — eOptika MIS"
 HERE = os.path.dirname(__file__)
 
-# --- shared nav (edit nav.json, or fetch it from the assets bucket in prod) ---
-with open(os.path.join(HERE, "nav.json"), encoding="utf-8") as fh:
-    NAV = json.load(fh)
+# --- Atlas menu: the same menu in every tool (how-to at the top of atlas_menu/__init__.py).
+# Its content is atlas-mis/nav.json, published to gs://eoptika-atlas-menu; this tool
+# serves it under /_atlas/ and the Atlas button (top-left) opens it.
+atlas_menu.attach(app)
+NAV = json.loads(atlas_menu.bundled("menu.json"))   # kept for templates that read `nav`
 
 # --- i18n -----------------------------------------------------------------
 LANGUAGES = [("en","English"),("hu","Magyar"),("de","Deutsch"),("ro","Română"),("fi","Suomi")]

@@ -10,11 +10,25 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='admin-tokens.css') }}">
   {# PROD: point the two lines above at the shared bucket instead, so every tool updates in lockstep:
      https://assets.atlas.eoptika.hu/admin-tokens.1.2.css  and  /fonts/... #}
+  {# Atlas menu: the same menu in every tool, drawn by /_atlas/menu.js (atlas_menu/). #}
+  <link rel="stylesheet" href="/_atlas/menu.css">
+  {# Phones and tablets: the top bar wraps onto rows instead of pushing the page sideways (ruled 2026-11-11).
+     Search gets its own full-width row. On phones the bar scrolls away with the page and the
+     name beside the avatar hides. #}
+  <style id="topbar-phone">
+  @media (max-width:1180px){
+    .topbar{height:auto;min-height:var(--topbar-h);flex-wrap:wrap;row-gap:var(--s-2);padding:var(--s-2) var(--s-4)}
+    .topbar .search{order:10;flex:1 1 100%;max-width:none}
+  }
+  @media (max-width:720px){
+    .topbar{position:static}
+    .topbar .profile-chip .who{display:none}
+  }
+  </style>
 </head>
 <body>
 {% include '_sprite.html' %}
-<div class="app">
-  {{ ui.sidebar(nav, nav_active) }}
+<div class="app app--atlas-menu">
   <main class="main">
     <header class="topbar">
       <div class="topbar__title">{% block page_title %}{{ page_title }}{% endblock %}</div>
@@ -45,22 +59,7 @@
     <div class="content">{% block content %}{% endblock %}</div>
   </main>
 </div>
-<script>
-(function(){
-  var KEY='atlas-nav-collapsed', store;
-  try{store=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){store={};}
-  function setOpen(g,open){g.dataset.open=open?'true':'false';
-    g.querySelector('.sidebar__section').setAttribute('aria-expanded',open?'true':'false');}
-  document.querySelectorAll('.sidebar__group').forEach(function(g){
-    var name=g.dataset.group;
-    if(Object.prototype.hasOwnProperty.call(store,name)) setOpen(g,store[name]); // stored pref wins
-    g.querySelector('.sidebar__section').addEventListener('click',function(){
-      var open=g.dataset.open!=='true'; setOpen(g,open); store[name]=open;
-      try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}
-    });
-  });
-})();
-</script>
+<script src="/_atlas/menu.js?tool={{ nav_active|default('', true)|urlencode }}&mount=.topbar" defer></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>
