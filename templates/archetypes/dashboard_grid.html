@@ -1,0 +1,22 @@
+{% extends "base.html" %}{% import '_macros.html' as ui %}
+{#  ARCHETYPE: dashboard_grid
+    USE FOR: analytics dashboards — Moneyprint, Cockpit KPIs.
+    PARTS: KPI strip · chart cards (swap .chart-ph for Plotly/Chart.js using --chart-1..8) · table. #}
+{% block content %}
+  <div class="kpis">
+    {{ ui.kpi('EBITDA (MTD)','97.5 M Ft','+11.2%','success') }}
+    {{ ui.kpi('Gross margin','33.5%','+2.3pp','success') }}
+    {{ ui.kpi('Orders','12,480','+6%','info') }}
+    {{ ui.kpi('Unprofitable SKUs','412','Amazon EU','warning') }}
+  </div>
+  <div class="cols-2">
+    <div class="card"><div class="card__header"><h2 class="card__title">EBITDA by month</h2></div><div class="chart-ph">chart → Plotly/Chart.js, colors --chart-1..8</div></div>
+    <div class="card"><div class="card__header"><h2 class="card__title">Margin by channel</h2></div><div class="chart-ph">chart placeholder</div></div>
+  </div>
+  <div class="card"><div class="card__header"><h2 class="card__title">Channel P&amp;L</h2></div>
+    <table class="table"><thead><tr><th>Channel</th><th>Revenue</th><th>Margin</th><th>EBITDA</th></tr></thead><tbody>
+      {% for c,r,m,e,tone in [('Webshop HU','412 M','34%','48 M','success'),('Amazon EU','188 M','19%','−4 M','danger'),('eMAG RO','96 M','28%','12 M','success')] %}
+      <tr><td>{{ c }}</td><td class="tnum">{{ r }}</td><td class="tnum">{{ m }}</td><td>{{ ui.pill(e,tone) }}</td></tr>{% endfor %}
+    </tbody></table>
+  </div>
+{% endblock %}

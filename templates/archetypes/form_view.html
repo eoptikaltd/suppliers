@@ -1,0 +1,31 @@
+{% extends "base.html" %}{% import '_macros.html' as ui %}
+{#  ARCHETYPE: form_view
+    USE FOR: settings, create/edit records, run-a-job screens.
+    BUTTON DOCTRINE: primary = save/proceed (neutral) · success = finalize · danger = destructive.
+    Warning/info are labels, never buttons. #}
+{% block content %}
+  <div style="max-width:640px">
+    <div class="card">
+      <div class="card__header"><div><h2 class="card__title">New price-watch rule</h2><p class="card__subtitle">Radar · competitor pricing</p></div></div>
+
+      <div class="field"><label class="label">Rule name</label>
+        <input class="input" placeholder="e.g. Biofinity — Kodano floor"></div>
+      <div class="field"><label class="label">Product SKU</label>
+        <input class="input code" placeholder="CV-BIO-06"><span class="hint">Match on Unas SKU.</span></div>
+      <div class="field"><label class="label">Competitor source</label>
+        <select class="select"><option>Prisync</option><option>Kodano DB</option><option>DataForSEO</option></select></div>
+      <div class="field"><label class="label">Alert threshold</label>
+        <input class="input" placeholder="−5%"></div>
+      <div class="field"><label class="checkbox"><input type="checkbox" checked> Notify via IRIS on breach</label></div>
+      <div class="field"><label class="label">Active</label>
+        <label class="switch"><input type="checkbox" checked><span class="track"></span></label></div>
+
+      <div class="toolbar" style="margin-top:var(--s-5)">
+        <button class="btn btn--primary">Save rule</button>
+        <button class="btn btn--ghost">Cancel</button>
+        <span style="flex:1"></span>
+        <button class="btn btn--danger">Delete</button>
+      </div>
+    </div>
+  </div>
+{% endblock %}

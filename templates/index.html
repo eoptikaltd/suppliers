@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% import '_macros.html' as ui %}
+{% block content %}
+  <div class="card">
+    <div class="card__header"><div><h2 class="card__title">Atlas archetype library</h2>
+      <p class="card__subtitle">Pick the page shape that fits your tool, copy that template, swap the demo data.</p></div></div>
+    <div class="cols-3">
+      {% for id,name,desc in [
+        ('control_room','Control room','dense live-ops monitor'),
+        ('list_monitor','List monitor','a list of things + summary'),
+        ('status_hub','Status hub','freshness + link hub'),
+        ('dashboard_grid','Dashboard grid','KPIs + charts'),
+        ('form_view','Form view','create / edit / settings'),
+        ('detail_view','Detail view','one record + timeline')] %}
+      <a class="tile" href="/a/{{ id }}" style="display:flex;gap:12px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--shadow-card);text-decoration:none;color:inherit">
+        <div><h3 style="margin:0 0 2px">{{ name }}</h3><p class="sub" style="margin:0">{{ desc }}</p><div class="code sub">archetypes/{{ id }}.html</div></div>
+      </a>{% endfor %}
+    </div>
+  </div>
+{% endblock %}

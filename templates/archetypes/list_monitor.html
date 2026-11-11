@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% import '_macros.html' as ui %}
+{#  ARCHETYPE: list_monitor
+    USE FOR: "monitor a list of things" — Suppliers/Blue-Berry, price watch, orders.
+    PARTS: KPI strip · toolbar (segmented filter) · main table · side summary. #}
+{% block content %}
+  <div class="kpis">
+    {{ ui.kpi('SKUs tracked','842') }}
+    {{ ui.kpi('Below target margin','37','−3.2% avg','warning') }}
+    {{ ui.kpi('Out of stock','12','2 new today','danger',flag=True) }}
+    {{ ui.kpi('Avg margin','31.4%','+0.4%','success') }}
+  </div>
+  <div class="cols-main">
+    <div class="card">
+      <div class="card__header">
+        <div><h2 class="card__title">Tracked SKUs</h2><p class="card__subtitle">842 · sorted by margin Δ</p></div>
+        <div class="segmented"><div class="segmented__item segmented__item--active">All</div><div class="segmented__item">Flagged</div></div>
+      </div>
+      {# DATA: rows #}
+      <table class="table"><thead><tr><th>Product</th><th>Supplier</th><th>Stock</th><th>Cost</th><th>Δ Margin</th><th>Status</th></tr></thead><tbody>
+        {% for s,k,sup,stk,cost,mg,mt,st,stt in [
+          ('Biofinity 6pk','CV-BIO-06','CooperVision','0','€38.10','−4.2%','danger','Out of stock','danger'),
+          ('Nulux 1.60','HY-NLX-160','Hoya','210','€22.40','+2.1%','success','In stock','success'),
+          ('Dailies Total1','AL-DT1-30','Alcon','54','€41.90','−0.6%','warning','Low','warning'),
+          ('EyeContact PURE','EC-PURE-01','Danyang','900','€6.80','+11.0%','success','New offer','info')] %}
+        <tr><td>{{ s }}<div class="sub code">{{ k }}</div></td><td>{{ sup }}</td><td class="tnum">{{ stk }}</td><td class="tnum">{{ cost }}</td><td>{{ ui.pill(mg,mt) }}</td><td>{{ ui.pill(st,stt) }}</td></tr>{% endfor %}
+      </tbody></table>
+    </div>
+    <div class="card"><div class="card__header"><h2 class="card__title">Suppliers</h2></div>
+      {% for n,d,v,tone in [('CooperVision','Biofinity · Proclear','−4.2%','danger'),('Hoya','Nulux','+2.1%','success'),('Alcon','Dailies · Air Optix','−0.6%','warning'),('Danyang','EyeContact PL','+11.0%','success')] %}
+      <div class="frow"><span class="dot dot--{{ tone }}"></span><div class="frow__main"><div class="frow__title">{{ n }}</div><div class="frow__meta">{{ d }}</div></div>{{ ui.pill(v,tone) }}</div>{% endfor %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}{% import '_macros.html' as ui %}
+{#  ARCHETYPE: control_room
+    USE FOR: dense live-ops monitors — Parcel Control, uptime, anything you watch all day.
+    PARTS: health strip · KPI grid · stage funnel · flags/exceptions · scorecard table.
+    Pairs best with data-density="control". Replace every {# DATA #} block with your query. #}
+{% block content %}
+  <div class="eyebrow">{{ page_title }} · {{ refreshed|default('refreshed 06:00 CET') }}</div>
+
+  {# DATA: carrier/source health #}
+  <div class="health">
+    {% for n, tone in health|default([('Foxpost','success'),('Express One','warning'),('GLS','success'),('MPL','success')]) %}
+    <span class="health-chip"><span class="dot dot--{{ tone }}"></span>{{ n }}</span>{% endfor %}
+  </div>
+
+  {# DATA: headline KPIs #}
+  <div class="kpis">
+    {{ ui.kpi('In transit','1,240','+4% vs 7d','info') }}
+    {{ ui.kpi('Delivered today','312','on track','success') }}
+    {{ ui.kpi('Exceptions','18','Express One','danger',flag=True) }}
+    {{ ui.kpi('Avg transit','2.3 d','−0.2 d','success') }}
+    {{ ui.kpi('On-time delivery','94%','target 93%','success') }}
+  </div>
+
+  {# DATA: funnel stages #}
+  <div class="card"><div class="card__header"><h2 class="card__title">Shipment funnel</h2><span class="card__subtitle">today</span></div>
+    <div class="stages">
+      {% for n,l,w in [('428','Created',100),('391','Label',91),('1,240','In transit',78),('96','At pickup / OFD',34),('312','Delivered',22)] %}
+      <div class="stage"><div class="stage__n tnum">{{ n }}</div><div class="stage__l">{{ l }}</div><div class="stage__bar"><i style="width:{{ w }}%"></i></div></div>{% endfor %}
+    </div>
+  </div>
+
+  <div class="cols-main">
+    {# DATA: exceptions/flags #}
+    <div class="card"><div class="card__header"><h2 class="card__title">Exceptions &amp; flags</h2><span class="card__subtitle">needs action</span></div>
+      {% for t,s,tone,st in [('Express One — 18 stuck >48h','BUD hub · courier exception','danger','Escalate'),('Foxpost — 6 lockers full','Debrecen, Szeged','warning','Redirect'),('3 parcels address-invalid','customer contact needed','warning','Contact')] %}
+      <div class="frow"><span class="dot dot--{{ tone }}"></span><div class="frow__main"><div class="frow__title">{{ t }}</div><div class="frow__meta">{{ s }}</div></div>{{ ui.pill(st, tone) }}</div>{% endfor %}
+    </div>
+    {# DATA: scorecard #}
+    <div class="card"><div class="card__header"><h2 class="card__title">Carrier OTD</h2><span class="card__subtitle">7d</span></div>
+      <table class="table"><thead><tr><th>Carrier</th><th>OTD</th></tr></thead><tbody>
+        {% for c,o,tone in [('Foxpost','95%','success'),('Express One','85%','warning'),('GLS','97%','success'),('MPL','91%','success')] %}
+        <tr><td>{{ c }}</td><td>{{ ui.pill(o,tone) }}</td></tr>{% endfor %}
+      </tbody></table>
+    </div>
+  </div>
+{% endblock %}

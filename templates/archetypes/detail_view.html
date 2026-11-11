@@ -1,0 +1,33 @@
+{% extends "base.html" %}{% import '_macros.html' as ui %}
+{#  ARCHETYPE: detail_view
+    USE FOR: a single record — WIMO parcel, an order, a supplier, a ticket.
+    PARTS: header + status · meta grid · tabs · timeline · actions. #}
+{% block content %}
+  <div class="card">
+    <div class="detail-head">
+      <div>
+        <div class="eyebrow">Parcel · Foxpost</div>
+        <h2 class="card__title" style="font-size:var(--fs-xl)">FP-20260706-004821</h2>
+        <p class="card__subtitle">Eredics Anita · Budapest locker</p>
+      </div>
+      <div class="toolbar">{{ ui.pill('In transit','info') }}<button class="btn btn--soft btn--sm">Copy tracking</button><button class="btn btn--primary btn--sm">Notify customer</button></div>
+    </div>
+
+    <dl class="meta-grid" style="margin-top:var(--s-5)">
+      <div><dt>Carrier</dt><dd>Foxpost</dd></div>
+      <div><dt>Service</dt><dd>Locker</dd></div>
+      <div><dt>Created</dt><dd>06 Jul 06:12</dd></div>
+      <div><dt>EDD</dt><dd class="tnum">08 Jul</dd></div>
+      <div><dt>Order</dt><dd class="code">UNAS-994210</dd></div>
+      <div><dt>Value</dt><dd class="tnum">18 900 Ft</dd></div>
+    </dl>
+
+    <div class="tab-row" style="margin-top:var(--s-5)">
+      <div class="tab tab--active">Timeline</div><div class="tab">Items</div><div class="tab">Customer</div>
+    </div>
+    <ul class="timeline">
+      {% for t,s in [('06 Jul 06:12','Label created — Foxpost'),('06 Jul 09:40','Picked up — Budapest depot'),('07 Jul 04:10','In transit — Budapest hub'),('07 Jul —','Out for delivery to locker')] %}
+      <li><div class="frow__title">{{ s }}</div><div class="frow__meta">{{ t }}</div></li>{% endfor %}
+    </ul>
+  </div>
+{% endblock %}

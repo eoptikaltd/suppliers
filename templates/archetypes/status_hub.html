@@ -1,0 +1,28 @@
+{% extends "base.html" %}{% import '_macros.html' as ui %}
+{#  ARCHETYPE: status_hub
+    USE FOR: freshness monitors + link hubs — Data Warehouse, DevOps, integrations health.
+    PARTS: summary KPIs · grouped freshness lists · link-hub chips. #}
+{% block content %}
+  <div class="kpis">
+    {{ ui.kpi('Total storage','149.3 GB','≈ $2.99/mo') }}
+    {{ ui.kpi('Sources','24','4 errors','danger',flag=True) }}
+    {{ ui.kpi('Newest load','GA4','12 Jun 01:31') }}
+    {{ ui.kpi('Rows (manual)','3.76 M','base_table_items') }}
+  </div>
+  <div class="cols-2">
+    <div class="card"><div class="card__header"><h2 class="card__title">BigQuery transfers</h2><span class="card__subtitle">green ≤24h · amber ≤48h</span></div>
+      {% for n,r,tone in [('Google Ads','459h ago','danger'),('GA4','2026-06-12','success'),('Merchant Center','error','danger'),('Search Console','2026-06-16','warning'),('Klaviyo','2026-06-11','warning')] %}
+      <div class="frow"><span class="dot dot--{{ tone }}"></span><div class="frow__main"><div class="frow__title">{{ n }}</div></div><span class="frow__meta tnum">{{ r }}</span></div>{% endfor %}
+    </div>
+    <div class="card"><div class="card__header"><h2 class="card__title">Orchestrators &amp; uploads</h2><span class="card__subtitle">n8n · Supermetrics · ERP</span></div>
+      {% for n,r,tone in [('Supermetrics FB · 6 tbl','71k rows','success'),('ERP · bejovo_megrendeles','failed','danger'),('Base_table_items · 26 tbl','3.76M rows','success'),('Webceo · 4 tbl','5.38M rows','success')] %}
+      <div class="frow"><span class="dot dot--{{ tone }}"></span><div class="frow__main"><div class="frow__title">{{ n }}</div></div><span class="frow__meta tnum">{{ r }}</span></div>{% endfor %}
+    </div>
+  </div>
+  <div class="card"><div class="card__header"><h2 class="card__title">System components</h2><span class="card__subtitle">link hub</span></div>
+    <div class="chips">
+      {% for c in ['Unas.hu','Tharanis ERP','BigQuery','Cloud Storage','BigQuery MCP','n8n.cloud','make.com','Cloud Run','Scheduler 06:00'] %}
+      <a class="chip-link" href="#">{{ c }}</a>{% endfor %}
+    </div>
+  </div>
+{% endblock %}

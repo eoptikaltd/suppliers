@@ -1,0 +1,31 @@
+{% extends "base.html" %}{% import '_macros.html' as ui %}
+{#  ARCHETYPE: hub
+    USE FOR: a section that is really a folder of tools (Suppliers, and any group
+    landing page). Renders a grid of cards; each card links out to an existing tool.
+    Swap the `cards` list for your tools. status: live|build|plan. `external` opens
+    the current run.app (or any) URL as-is; the sub-tools are NOT retrofitted. #}
+{% block content %}
+  {% set cards = cards|default([
+    {"name":"Blue-Berry","icon":"suppliers","desc":"Sourcing monitor — Blue-Berry channel","url":"#","status":"live"},
+    {"name":"MrSonder","icon":"suppliers","desc":"Sourcing monitor — MrSonder channel","url":"#","status":"live"}
+  ]) %}
+  <div class="card">
+    <div class="card__header"><div>
+      <h2 class="card__title">{{ page_title }}</h2>
+      <p class="card__subtitle">{{ hub_subtitle|default('Tools in this area — click through to open.') }}</p>
+    </div></div>
+    <div class="hub-grid">
+      {% for c in cards %}
+      <a class="hub-card" href="{{ c.url }}" {{ 'target=_blank rel=noopener' if c.get('external', True) }}>
+        <div class="hub-card__icon">{{ ui.icon(c.icon) }}</div>
+        <div class="hub-card__body">
+          <h3>{{ c.name }} <span class="status status--{{ 'success' if c.status=='live' else 'warning' if c.status=='build' else 'muted' }}">{{ c.status }}</span></h3>
+          <p>{{ c.desc }}</p>
+          {% if c.url and c.url != '#' %}<span class="hub-card__url">{{ c.url|replace('https://','') }}</span>{% endif %}
+        </div>
+        <svg class="hub-card__go" width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
