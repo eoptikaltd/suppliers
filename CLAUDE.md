@@ -1,3 +1,14 @@
+> **This repo is the Suppliers hub** (Cloud Run service `suppliers`, suppliers.eoptika.com): one page
+> with cards that open the Blue-Berry and MrSonder sourcing monitors. Recovered from Cloud Run on
+> 2026-11-11 (it was deployed from a laptop in July).
+> - **Deploy:** push to `main` → Cloud Build trigger `deploy-suppliers` (europe-west1, no approval;
+>   read-only page) runs `cloudbuild.yaml`: new image only, sign-in and settings untouched. No laptop
+>   deploys. Push only after the phone (390×844) then laptop (1440×900) browser check.
+> - **Menu:** the shared Atlas menu (`atlas_menu/`, copied unchanged from `eoptikaltd/atlas-tool-dev-kit`;
+>   content = `eoptikaltd/atlas-mis` → `nav.json`). The old `nav.json` sidebar below is superseded.
+> - The rest of this file is the kit's July text, kept for reference; the kit's current rules are in
+>   `eoptikaltd/atlas-tool-dev-kit` → `CLAUDE.md`.
+
 # Atlas tool — build instructions for Claude Code
 
 You are building an internal **eOptika** tool inside the **Atlas** admin toolkit. The UI is already designed and decided. Your job is **content and data, not design.** Follow this exactly; read `ATLAS-UI-CONTRACT.md` before writing any template.

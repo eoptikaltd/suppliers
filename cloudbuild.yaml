@@ -1,0 +1,28 @@
+# Deploys the Suppliers hub (Cloud Run service "suppliers", suppliers.eoptika.com)
+# on every push to main: trigger deploy-suppliers (europe-west1), NO approval
+# (Sabie's ruling 2026-11-11: read-only page, deploy automatically). Push only
+# after passing the phone-then-laptop browser check.
+# Image only: sign-in (IAP), access list, runtime account, settings and domain of
+# the live service are left exactly as they are.
+substitutions:
+  _REGION: europe-west1
+  _SERVICE: suppliers
+  _IMAGE: europe-west1-docker.pkg.dev/natural-caster-496309-j3/deploys/suppliers
+steps:
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args: ["build", "-t", "${_IMAGE}:${COMMIT_SHA}", "-t", "${_IMAGE}:latest", "."]
+  - id: push-sha
+    name: gcr.io/cloud-builders/docker
+    args: ["push", "${_IMAGE}:${COMMIT_SHA}"]
+  - id: push-latest
+    name: gcr.io/cloud-builders/docker
+    args: ["push", "${_IMAGE}:latest"]
+  - id: deploy
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: gcloud
+    args: ["run", "deploy", "${_SERVICE}", "--project=$PROJECT_ID", "--region=${_REGION}",
+           "--image=${_IMAGE}:${COMMIT_SHA}", "--quiet"]
+options:
+  logging: CLOUD_LOGGING_ONLY
+serviceAccount: projects/natural-caster-496309-j3/serviceAccounts/eoptika-deployer@natural-caster-496309-j3.iam.gserviceaccount.com
