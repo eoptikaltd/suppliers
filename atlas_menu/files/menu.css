@@ -1,12 +1,12 @@
 /* ============================================================================
-   Atlas menu — one shared menu for every eOptika tool.   menu.css · v1 · 2026-11-10
+   Atlas menu — one shared menu for every eOptika tool.   menu.css · v2 · 2026-11-12
    Drawn by menu.js. Uses the Atlas design tokens when the page has them
    (admin-tokens.css); every value also has the same Atlas value as a fallback,
    so a tool without the tokens (Dash, plain pages) looks the same.
    All classes start with "atm-" so they never clash with a tool's own styles.
    ============================================================================ */
 
-.atm-mark,.atm-panel,.atm-backdrop{
+.atm-mark,.atm-panel,.atm-backdrop,.atm-lang{
   --atm-surface:var(--surface,#FFFFFF);
   --atm-surface-2:var(--surface-2,#F0F2FA);
   --atm-border:var(--border,#E8EAF3);
@@ -95,3 +95,20 @@ html.atm-open,html.atm-open body{overflow:hidden}
 @media(prefers-reduced-motion:reduce){
   .atm-panel,.atm-backdrop,.atm-chev,.atm-mark{transition:none}
 }
+
+/* ---- v2 · 2026-11-12: "Sign in again" (menu.json could not be read) --------- */
+.atm-signin{font-weight:600;color:var(--atm-focus);text-decoration:underline}
+
+/* ---- v2 · 2026-11-12: the shared language menu ------------------------------
+   Same look as Gateway's sign-in pages: the kit's .langselect box with a flag,
+   opening the kit's .menu list. Drawn by menu.js into [data-atlas-lang]. */
+.atm-lang{position:relative;display:inline-block}
+.atm-lang summary{list-style:none;cursor:pointer;user-select:none;font-weight:600}
+.atm-lang summary::-webkit-details-marker{display:none}
+.atm-lang[open] .atm-chev{transform:rotate(180deg)}
+.atm-lang__menu{position:absolute;right:0;top:calc(100% + 6px);min-width:170px;z-index:2147483000;
+  display:flex;flex-direction:column;gap:2px;padding:6px}
+.atm-lang__menu--left{left:0;right:auto}
+.atm-lang__item{display:flex;align-items:center;gap:var(--s-2,8px);color:inherit;text-decoration:none}
+.atm-lang__item[aria-current="true"]{font-weight:700}
+.atm-flag{width:20px;height:14px;border-radius:2px;box-shadow:0 0 0 1px var(--atm-border);flex:none}

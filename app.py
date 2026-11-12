@@ -20,7 +20,10 @@ atlas_menu.attach(app)
 NAV = json.loads(atlas_menu.bundled("menu.json"))   # kept for templates that read `nav`
 
 # --- i18n -----------------------------------------------------------------
-LANGUAGES = [("en","English"),("hu","Magyar"),("de","Deutsch"),("ro","Română"),("fi","Suomi")]
+# Languages offered (Atlas ruling 2026-11-12): English, Hungarian, Romanian (de/fi files
+# stay). The choice is the cookie atlas_lang, shared by every eoptika.com tool and set by
+# the Atlas language menu (/_atlas/menu.js); the older "lang" cookie is read when missing.
+LANGUAGES = [("en","English"),("hu","Magyar"),("ro","Română")]
 CATALOG = {}
 for _f in glob.glob(os.path.join(HERE, "translations", "*.json")):
     with open(_f, encoding="utf-8") as fh:
@@ -32,9 +35,17 @@ def _cookie(name, allowed, default):
     v = request.cookies.get(name, default)
     return v if v in allowed else default
 
+def current_lang():
+    """atlas_lang (shared by every eoptika.com tool) first, then the older lang cookie."""
+    for name in ("atlas_lang", "lang"):
+        v = request.cookies.get(name)
+        if v in dict(LANGUAGES):
+            return v
+    return "en"
+
 @app.context_processor
 def inject_globals():
-    lang = _cookie("lang", dict(LANGUAGES), "en")
+    lang = current_lang()
     def t(key, **kw):
         s = CATALOG.get(lang, {}).get(key) or CATALOG.get("en", {}).get(key, key)
         return s.format(**kw) if kw else s

@@ -108,6 +108,13 @@
           "icon": "dashboards",
           "status": "build",
           "about": "Company performance · revenue, gross margin, EBITDA vs last year"
+        },
+        {
+          "id": "weekly-report",
+          "label": "Weekly report",
+          "icon": "dashboards",
+          "status": "live",
+          "about": "Weekly management report · moving to atlas.eoptika.com/dashboards/management-weekly-report"
         }
       ]
     },
@@ -175,6 +182,7 @@
       "items": [
         {
           "id": "store-dashboards",
+          "gateway": "store-monthly-revenues",
           "label": "Store dashboards",
           "icon": "store",
           "status": "live",
@@ -183,6 +191,7 @@
         },
         {
           "id": "clearvisio-erp-sync-fixes",
+          "gateway": "store-sync-fixes",
           "label": "ClearVisio–ERP sync fixes",
           "icon": "sync-fixes",
           "status": "live",
@@ -367,6 +376,22 @@
           "status": "live",
           "url": "https://suppliers.eoptika.com",
           "about": "Sourcing monitors · Blue-Berry · MrSonder"
+        },
+        {
+          "id": "blueberry-sourcing-monitor",
+          "label": "Blue-Berry monitor",
+          "icon": "suppliers",
+          "status": "live",
+          "url": "https://blue-berry-sourcing-monitor-thrl3bt5ya-ew.a.run.app",
+          "about": "Sourcing monitor · Blue-Berry channel"
+        },
+        {
+          "id": "mrsonder-sourcing-monitor",
+          "label": "MrSonder monitor",
+          "icon": "suppliers",
+          "status": "live",
+          "url": "https://mrsonder-sourcing-monitor-thrl3bt5ya-ew.a.run.app",
+          "about": "Sourcing monitor · MrSonder channel"
         },
         {
           "id": "dual-sourcing",

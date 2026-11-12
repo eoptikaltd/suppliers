@@ -1,4 +1,4 @@
-"""Atlas menu — one shared menu for every eOptika tool.  v1 · 2026-11-10
+"""Atlas menu — one shared menu for every eOptika tool.  v2 · 2026-11-12 (files: language menu, sign-in-again)
 
 What it does
     Adds four small files to the tool, all under /_atlas/ on the tool's own address:

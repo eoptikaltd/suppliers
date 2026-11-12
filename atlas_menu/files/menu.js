@@ -1,4 +1,4 @@
-/* Atlas menu — one shared menu for every eOptika tool.   menu.js · v1 · 2026-11-10
+/* Atlas menu — one shared menu for every eOptika tool.   menu.js · v2 · 2026-11-12
 
    Add to any page (the tool serves /_atlas/ with atlas_menu.attach):
        <script src="/_atlas/menu.js?tool=<tool id>" defer></script>
@@ -8,11 +8,21 @@
                       without it the button floats at the top-left of the page
        size=s         a smaller button (34 px) for a slim top bar that would
                       otherwise wrap (e.g. BI)
+       button=0       no Atlas button and no menu: only the language menu below
+                      (the Atlas page, which draws its own menu)
 
    The Atlas button opens the menu over the page; the button inside the menu, a tap
    beside it, Esc, or picking a tool closes it. Menu content comes from menu.json on
-   the page's own address (answered by the tool today, by Gateway once the tool sits
-   behind it), so it is the same everywhere and only lists what this person may open.
+   the page's own address (answered by the tool on its own address, by Gateway for
+   pages it serves), so it is the same everywhere and lists only what this person may
+   open. If menu.json cannot be read, the menu shows only "Sign in again" (fail closed,
+   ruled 2026-11-09), never a full list.
+
+   Language menu (shared, ruled 2026-11-12): a tool with translations puts
+       <span data-atlas-lang data-langs="en,hu,ro" data-current="{{ lang }}"></span>
+   where the menu belongs (right of its top bar). Picking a language stores it in the
+   cookie atlas_lang, shared by every eoptika.com address, and reloads the page; the
+   tool reads atlas_lang first. A tool without translations shows no language menu.
 */
 (function () {
   'use strict';
@@ -25,12 +35,22 @@
   var TOOL = src.searchParams.get('tool') || '';
   var MOUNT = src.searchParams.get('mount') || '';
   var SMALL = src.searchParams.get('size') === 's';
+  var BUTTON = src.searchParams.get('button') !== '0';
   var GROUPS_KEY = 'atlas-menu-groups';
+  var LANG_COOKIE = 'atlas_lang';
+  var LANG_NAMES = { en: 'English', hu: 'Magyar', ro: 'Română' };
   var root = document.documentElement;
 
-  var hu = /^hu/i.test(root.lang || navigator.language || '');
-  var T = hu ? { open: 'Atlas menü megnyitása', close: 'Atlas menü bezárása', none: 'Nincs elérhető eszköz.' }
-             : { open: 'Open the Atlas menu', close: 'Close the Atlas menu', none: 'No tools to show.' };
+  var WORDS = {
+    en: { open: 'Open the Atlas menu', close: 'Close the Atlas menu', none: 'No tools to show.',
+          signin: 'Sign in again', lang: 'Language' },
+    hu: { open: 'Atlas menü megnyitása', close: 'Atlas menü bezárása', none: 'Nincs elérhető eszköz.',
+          signin: 'Jelentkezz be újra', lang: 'Nyelv' },
+    ro: { open: 'Deschide meniul Atlas', close: 'Închide meniul Atlas', none: 'Niciun instrument de afișat.',
+          signin: 'Autentifică-te din nou', lang: 'Limba' }
+  };
+  var code = (root.lang || navigator.language || 'en').slice(0, 2).toLowerCase();
+  var T = WORDS[code] || WORDS.en;
 
   // the look: load menu.css unless the page already has it
   if (!document.querySelector('link[href*="_atlas/menu.css"]')) {
@@ -76,7 +96,90 @@
     try { localStorage.setItem(GROUPS_KEY, JSON.stringify(v)); } catch (e) {}
   }
 
+  // ---- the shared language menu ----------------------------------------------
+  function flag(lang) {
+    var ns = 'http://www.w3.org/2000/svg';
+    var s = document.createElementNS(ns, 'svg');
+    s.setAttribute('class', 'atm-flag');
+    s.setAttribute('aria-hidden', 'true');
+    var u = document.createElementNS(ns, 'use');
+    u.setAttribute('href', '#i-flag-' + lang);
+    s.appendChild(u);
+    return s;
+  }
+  function chooseLang(lang) {
+    // one choice for every eOptika tool: shared by all eoptika.com addresses
+    var shared = /(^|\.)eoptika\.com$/i.test(location.hostname) ? '; domain=eoptika.com' : '';
+    var secure = location.protocol === 'https:' ? '; secure' : '';
+    document.cookie = LANG_COOKIE + '=' + lang + '; path=/; max-age=31536000; samesite=lax' + secure + shared;
+    location.reload();
+  }
+  function langMenu(spot) {
+    var langs = (spot.getAttribute('data-langs') || 'en,hu,ro').split(',')
+      .map(function (x) { return x.trim(); }).filter(function (x) { return LANG_NAMES[x]; });
+    if (!langs.length) return;
+    var current = spot.getAttribute('data-current');
+    if (langs.indexOf(current) < 0) current = langs[0];
+    var box = el('details', 'atm-lang');
+    var sum = el('summary', 'langselect', { 'aria-label': T.lang, title: T.lang });
+    sum.appendChild(flag(current));
+    var name = el('span');
+    name.textContent = LANG_NAMES[current];
+    sum.appendChild(name);
+    sum.appendChild(chev());
+    var list = el('div', 'menu atm-lang__menu', { role: 'menu' });
+    langs.forEach(function (lang) {
+      var a = el('a', 'menu__item atm-lang__item', { role: 'menuitem', lang: lang, href: '#' });
+      if (lang === current) a.setAttribute('aria-current', 'true');
+      a.appendChild(flag(lang));
+      var n = el('span');
+      n.textContent = LANG_NAMES[lang];
+      a.appendChild(n);
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (lang === current) { box.open = false; return; }
+        chooseLang(lang);
+      });
+      list.appendChild(a);
+    });
+    box.appendChild(sum);
+    box.appendChild(list);
+    box.addEventListener('toggle', function () {
+      // open towards the side with room: right-aligned under the box, unless the box
+      // sits near the left edge (phones, where the top bar wraps)
+      if (!box.open) return;
+      list.classList.remove('atm-lang__menu--left');
+      if (list.getBoundingClientRect().left < 8) list.classList.add('atm-lang__menu--left');
+    });
+    document.addEventListener('click', function (e) {     // close on a click elsewhere
+      if (box.open && !box.contains(e.target)) box.open = false;
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && box.open) { box.open = false; sum.focus(); }
+    });
+    spot.textContent = '';
+    spot.appendChild(box);
+    spot.setAttribute('data-atlas-lang-done', '');
+  }
+  function mountLangs() {
+    var spots = document.querySelectorAll('[data-atlas-lang]:not([data-atlas-lang-done])');
+    for (var i = 0; i < spots.length; i++) langMenu(spots[i]);
+  }
+  function loadIcons() {
+    fetch(BASE + 'menu-icons.svg', { credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.text() : ''; })
+      .then(function (svg) {
+        if (!svg) return;
+        var box = el('div', '', { 'aria-hidden': 'true', style: 'position:absolute;width:0;height:0;overflow:hidden' });
+        box.innerHTML = svg;
+        document.body.insertBefore(box, document.body.firstChild);
+      })
+      .catch(function () {});
+  }
+
   function start() {
+    mountLangs();
+    if (!BUTTON) { loadIcons(); return; }
     // ---- the Atlas button on the page -------------------------------------
     var opener = el('button', 'atm-mark', { type: 'button', 'aria-controls': 'atlas-menu',
       'aria-expanded': 'false', 'aria-label': T.open, title: T.open });
@@ -99,6 +202,7 @@
       var p = MOUNT ? document.querySelector(MOUNT) : null;
       if (p) { if (opener.parentNode !== p) mountIn(p); }
       else if (!opener.isConnected) floatIt();
+      mountLangs();
     }
     floatIt();
     keepPlaced();
@@ -147,20 +251,28 @@
     });
 
     // ---- icons + content ---------------------------------------------------
-    fetch(BASE + 'menu-icons.svg', { credentials: 'same-origin' })
-      .then(function (r) { return r.ok ? r.text() : ''; })
-      .then(function (svg) {
-        if (!svg) return;
-        var box = el('div', '', { 'aria-hidden': 'true', style: 'position:absolute;width:0;height:0;overflow:hidden' });
-        box.innerHTML = svg;
-        document.body.insertBefore(box, document.body.firstChild);
-      })
-      .catch(function () {});
+    loadIcons();
 
-    fetch(BASE + 'menu.json', { credentials: 'same-origin' })
+    // No menu.json (sign-in ran out, access data too old, no network): show only
+    // "Sign in again", never a full list. Reloading the page lets Gateway ask for
+    // the sign-in when it is needed. cache: no-store, so a change in someone's
+    // access shows at their next page load.
+    fetch(BASE + 'menu.json', { credentials: 'same-origin', cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
-      .then(fill)
-      .catch(function () { opener.hidden = true; });   // no menu to show: no button either
+      .then(function (menu) {
+        if (!menu || !Array.isArray(menu.groups)) throw new Error('not a menu');
+        fill(menu);
+      })
+      .catch(signInAgain);
+
+    function signInAgain() {
+      list.textContent = '';
+      var p = el('p', 'atm-empty');
+      var a = el('a', 'atm-signin', { href: location.href });
+      a.textContent = T.signin;
+      p.appendChild(a);
+      list.appendChild(p);
+    }
 
     function fill(menu) {
       var home = (menu.home && menu.home.url) || 'https://atlas.eoptika.com';

@@ -39,12 +39,9 @@
       </div>
       <div class="topbar__spacer"></div>
       {% block topbar_actions %}
-      <label class="langselect" title="{{ t('Language') }}">
-        <svg width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg>
-        <select aria-label="{{ t('Language') }}" onchange="location.href='{{ url_for('set_lang') }}?lang='+this.value+'&next={{ request.path }}'">
-          {% for code, name in languages %}<option value="{{ code }}" {{ 'selected' if code == lang }}>{{ name }}</option>{% endfor %}
-        </select>
-      </label>
+      {# Shared Atlas language menu (flags; English, Hungarian, Romanian), drawn by
+         /_atlas/menu.js. The choice is shared by every eoptika.com tool. #}
+      <span data-atlas-lang data-langs="{{ languages|map(attribute=0)|join(',') }}" data-current="{{ lang }}"></span>
       <div class="segmented" role="group" aria-label="{{ t('Density') }}">
         {% for d in ['comfortable','compact','control'] %}
         <a class="segmented__item {{ 'segmented__item--active' if density==d }}"
